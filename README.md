@@ -1,9 +1,11 @@
 # traintime
-
+<!-- 
 Currently works as long as the time until next train is after the current time.
 returns an error if the first train was before "now".
 
-psedo-code for the logic on how to solve that issue is commented...a loop needs to be created, but unsure which variable to iterate in the loop.
+psedo-code for the logic on how to solve that issue is commented...a loop needs to be created, but unsure which variable to iterate in the loop. -->
+Code seems to work. Quite ugly currently, not sure if i'll spend the time to clean it up. Function > form?
+I was quite surprised when it finally worked actually.
 
 code for the time is still very ugly and could be cleaned up.
 

@@ -26,7 +26,7 @@
     var trainFirstDepartureTime = $("#first-departure-time-input").val().trim();
     //   var trainFirstDepartureTime = moment($("#first-departure-time-input").val().trim(), "HH:mm").format("X");
     var trainFrequency = $("#frequency-input").val().trim();
-    
+    var trainNextArrival = 0;
     // Creates local "temporary" object for holding employee data
     var newTrain = {
     name: trainName,
@@ -61,7 +61,7 @@ database.ref().on("child_added", function(childSnapshot) {
   var trainName = childSnapshot.val().name;
   var trainDestination = childSnapshot.val().destination;
   var trainFirstDepartureTime = childSnapshot.val().start;
-  var trainFrequency = childSnapshot.val().frequency;
+  var trainFrequency = parseInt(childSnapshot.val().frequency);
   
   // Train Info
     console.log(trainName);
@@ -115,16 +115,32 @@ database.ref().on("child_added", function(childSnapshot) {
     
     console.log("first depart time in min=" + departureInMin);  
     // is time less than first train departure 0010 < 0030, dif = 0020
-    if (currentTimeInMin < departureInMin) {
-      var trainMinutesAway = departureInMin - currentTimeInMin;
-      console.log(trainMinutesAway);
-      nextTrainInMin = currentTimeInMin + trainFrequency;
-      nextTrainHrs = nextTrainInMin / 60;
-      console.log("hrz:" + nextTrainHrs);
-      var trainNextArrival = trainFirstDepartureTime;
-      console.log(trainNextArrival);
+   var solved = false;
+   var nextTrainDeparture = departureInMin + trainFrequency;
+   for (i = 0; i < 100; i = i++) {
+
+     console.log(nextTrainDeparture);
+     console.log(solved);
+     if (currentTimeInMin < departureInMin && solved === false) {
+       var trainMinutesAway = departureInMin - currentTimeInMin;
+       console.log(trainMinutesAway);
+       nextTrainInMin = currentTimeInMin + trainFrequency;
+       nextTrainHrs = nextTrainInMin / 60;
+       console.log("time till next train:" + nextTrainHrs);
+       var trainNextArrival = trainFirstDepartureTime;
+       console.log(trainNextArrival);
+       solved = true;
+      }
+      if (currentTimeInMin < nextTrainDeparture && solved === false) {
+        trainNextArrival = (nextTrainDeparture - currentTimeInMin)
+        console.log("time till next train:" + trainNextArrival + ", i =" + i);
+        solved = true;
+      }
+    NextTrainDeparture = nextTrainDeparture + trainFrequency;
+    console.log("iteration #:" + i);
     }
-    
+
+      
     //  yes ? what is diff between times 
     // no? add interval to departure time
     //  check if current time is less than new value
