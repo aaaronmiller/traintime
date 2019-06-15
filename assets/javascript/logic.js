@@ -117,7 +117,7 @@ database.ref().on("child_added", function(childSnapshot) {
     // is time less than first train departure 0010 < 0030, dif = 0020
    var solved = false;
    var nextTrainDeparture = departureInMin + trainFrequency;
-   for (i = 0; i < 100; i = i++) {
+   for (i = 0; i < 100; i++) {
 
      console.log(nextTrainDeparture);
      console.log(solved);
@@ -132,11 +132,14 @@ database.ref().on("child_added", function(childSnapshot) {
        solved = true;
       }
       if (currentTimeInMin < nextTrainDeparture && solved === false) {
-        trainNextArrival = (nextTrainDeparture - currentTimeInMin)
-        console.log("time till next train:" + trainNextArrival + ", i =" + i);
+        trainMinutesAway = (nextTrainDeparture - currentTimeInMin);
+        nextTrainInMin = trainMinutesAway + currentTimeInMin;
+        qqq = nextTrainInMin * 60000;
+        trainNextArrival = moment.utc(qqq).format('h:mm');  // "1:00 am" 
+        console.log("time till next train:" + trainMinutesAway + ", i =" + i);
         solved = true;
       }
-    NextTrainDeparture = nextTrainDeparture + trainFrequency;
+    nextTrainDeparture = nextTrainDeparture + trainFrequency;
     console.log("iteration #:" + i);
     }
 
